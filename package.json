@@ -1,22 +1,14 @@
 {
-  "type": "module",
   "name": "payments",
   "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "format": "prettier --write ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/artndev/blog.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/artndev/blog/issues"
-  },
-  "homepage": "https://github.com/artndev/blog#readme",
-  "description": "",
   "devDependencies": {
     "@eslint/js": "^9.23.0",
     "eslint": "^9.23.0",
