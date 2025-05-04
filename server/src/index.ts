@@ -3,9 +3,11 @@ dotenv.config()
 
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import express from 'express'
+import express, { request } from 'express'
+import session from 'express-session'
 import config from './config.json' with { type: 'json' }
-import articles from './routers/test.js'
+import passport from 'passport'
+import './strategies/local_strategy'
 
 const app = express()
 app.use(
@@ -23,8 +25,48 @@ app.use(
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(
+  session({
+    secret: '17fa5175-26e8-419c-a17b-5ab2e42bb27d',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+      maxAge: 3600000, // 1h
+    },
+  })
+)
 
-app.use('/api', articles)
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.post('/api/auth', passport.authenticate('local'), (req, res) => {
+  res.sendStatus(200)
+})
+
+app.get('/api/auth/status', (req, res) => {
+  if (!req.user) {
+    res.sendStatus(401)
+    return
+  }
+
+  res.send(req.user)
+})
+
+app.post('/api/auth/logout', (req, res) => {
+  if (!req.user) {
+    res.sendStatus(401)
+    return
+  }
+
+  req.logout(err => {
+    if (err) {
+      res.sendStatus(400)
+      return
+    }
+
+    res.sendStatus(200)
+  })
+})
 
 const port = config.SERVER_PORT || 8000
 app.listen(port, () => console.log(`Server listening on port ${port}`))
