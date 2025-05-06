@@ -3,9 +3,10 @@ dotenv.config()
 
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import express from 'express'
+import express, { request } from 'express'
+import session from 'express-session'
 import config from './config.json' with { type: 'json' }
-import tests from './routers/test.js'
+import articles from './routers/test.js'
 
 const app = express()
 app.use(
@@ -24,7 +25,7 @@ app.use(
 app.use(express.json())
 app.use(cookieParser())
 
-app.use('/api', tests)
+app.use('/api', articles)
 
 const port = config.SERVER_PORT || 8000
 app.listen(port, () => console.log(`Server listening on port ${port}`))
