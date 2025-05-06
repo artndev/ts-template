@@ -4,9 +4,7 @@ dotenv.config()
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express, { request } from 'express'
-import session from 'express-session'
 import config from './config.json' with { type: 'json' }
-import articles from './routers/test.js'
 
 const app = express()
 app.use(
@@ -17,15 +15,15 @@ app.use(
   })
 )
 
-// app.use((_, res, next) => {
-//   res.append('Access-Control-Allow-Headers', '*')
-//   next()
-// })
-
 app.use(express.json())
 app.use(cookieParser())
 
-app.use('/api', articles)
+app.get('/api', (_, res) => {
+  res.status(200).json({
+    message: 'OK!',
+    answer: true,
+  })
+})
 
 const port = config.SERVER_PORT || 8000
 app.listen(port, () => console.log(`Server listening on port ${port}`))
